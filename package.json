@@ -1,4 +1,4 @@
-{
+{ "_comment": "Este archivo configura las dependencias, como el pom.xml en Spring-Boot",
   "name": "catalogo-tecnologico",
   "version": "0.0.0",
   "scripts": {

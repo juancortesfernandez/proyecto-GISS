@@ -1,0 +1,132 @@
+<div class="catalogo-container">
+  <h1>Administración del Catálogo Tecnológico</h1>
+  
+  <!-- FILTROS EN 3 COLUMNAS -->
+  <div class="filtros-grid">
+    
+    <!-- Columna 1: Tipología -->
+    <div class="filtro-columna">
+      <div class="filtro-header" (click)="toggleDesplegable('tipologia')">
+        <span class="label">Tipología de Aplicación</span>
+        <span class="valor-seleccionado">Backend Spring Boot</span>
+        <span class="flecha">{{ desplegables.tipologia ? '▲' : '▼' }}</span>
+      </div>
+      @if (desplegables.tipologia) {
+        <div class="filtro-opciones">
+          <div class="opcion">Java Spring Boot</div>
+          <div class="opcion">Node.js</div>
+          <div class="opcion">Python Django</div>
+          <div class="opcion">.NET Core</div>
+        </div>
+      }
+    </div>
+
+    <!-- Columna 2: Plataforma -->
+    <div class="filtro-columna">
+      <div class="filtro-header" (click)="toggleDesplegable('plataforma')">
+        <span class="label">Plataforma Cloud</span>
+        <span class="valor-seleccionado">AWS</span>
+        <span class="flecha">{{ desplegables.plataforma ? '▲' : '▼' }}</span>
+      </div>
+      @if (desplegables.plataforma) {
+        <div class="filtro-opciones">
+          <div class="opcion">AWS (seleccionado)</div>
+          <div class="opcion">Azure</div>
+          <div class="opcion">Google Cloud</div>
+          <div class="opcion">On-Premise</div>
+        </div>
+      }
+    </div>
+
+    <!-- Columna 3: Dominio -->
+    <div class="filtro-columna">
+      <div class="filtro-header" (click)="toggleDesplegable('dominio')">
+        <span class="label">Dominio Tecnológico</span>
+        <span class="valor-seleccionado">Base de Datos</span>
+        <span class="flecha">{{ desplegables.dominio ? '▲' : '▼' }}</span>
+      </div>
+      @if (desplegables.dominio) {
+        <div class="filtro-opciones">
+          <div class="opcion">Base de Datos (seleccionado)</div>
+          <div class="opcion">Frontend</div>
+          <div class="opcion">Backend</div>
+          <div class="opcion">DevOps</div>
+          <div class="opcion">Seguridad</div>
+        </div>
+      }
+    </div>
+  </div>
+
+  <!-- TABLA DE TECNOLOGÍAS (CON NUEVAS COLUMNAS) -->
+  <table class="tabla-tecnologias">
+    <thead>
+      <tr>
+        <th>Tecnología</th>
+        <th>Proveedor</th>
+        <th>Estado</th>
+        <!-- NUEVAS 3 COLUMNAS -->
+        <th>Permitido</th>
+        <th>Recomendado</th>
+        <th>Obligatorio</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (tech of tecnologias; track tech.nombre) {
+        <tr>
+          <td><strong>{{ tech.nombre }}</strong></td>
+          <td>
+            <span class="proveedor-badge">{{ tech.proveedor }}</span>
+          </td>
+          <td>
+            <span class="estado-badge" [class]="tech.estado.toLowerCase()">
+              {{ tech.estado }}
+            </span>
+          </td>
+          <!-- CHECKBOXES -->
+          <td class="checkbox-columna">
+            <input type="checkbox" class="checkbox-personalizado" [checked]="tech.permitido">
+          </td>
+          <td class="checkbox-columna">
+            <input type="checkbox" class="checkbox-personalizado" [checked]="tech.recomendado">
+          </td>
+          <td class="checkbox-columna">
+            <input type="checkbox" class="checkbox-personalizado" [checked]="tech.obligatorio">
+          </td>
+          <td>
+            <button class="btn-editar">Editar</button>
+          </td>
+        </tr>
+      }
+    </tbody>
+  </table>
+
+  <!-- BARRA DE ACCIONES INFERIOR -->
+  <div class="acciones-inferiores">
+    <button class="btn-add">
+      <span class="icon">+</span> Añadir Tecnología
+    </button>
+    
+    <div class="botones-guardar-cancelar">
+      <button class="btn-guardar">Guardar</button>
+      <button class="btn-cancelar">Cancelar</button>
+    </div>
+  </div>
+
+  <!-- SECCIÓN DE AUDITORÍA -->
+  <div class="auditoria">
+    <h2>Auditoría de Cambios</h2>
+    
+    <div class="cambios-lista">
+      @for (cambio of cambios; track cambio.fecha) {
+        <div class="cambio-item">
+          <span class="fecha">{{ cambio.fecha }}</span>
+          <span class="usuario">{{ cambio.usuario }}</span>
+          <span class="descripcion">{{ cambio.descripcion }}</span>
+        </div>
+      }
+    </div>
+
+    <a href="#" class="ver-historial">Ver Historial Completo ></a>
+  </div>
+</div>
