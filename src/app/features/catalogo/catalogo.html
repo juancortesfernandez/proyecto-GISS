@@ -1,17 +1,17 @@
-<div class="catalogo-container">
+<div class="catalogo-container"> <!--Contenedor principal-->
   <h1>Administración del Catálogo Tecnológico</h1>
   
-  <!-- FILTROS EN 3 COLUMNAS -->
+ <!--3 columnas para filtros-->
   <div class="filtros-grid">
     
-    <!-- Columna 1: Tipología -->
+    <!-- Columna 1 --- Tipología -->
     <div class="filtro-columna">
-      <div class="filtro-header" (click)="toggleDesplegable('tipologia')">
-        <span class="label">Tipología de Aplicación</span>
-        <span class="valor-seleccionado">Backend Spring Boot</span>
-        <span class="flecha">{{ desplegables.tipologia ? '▲' : '▼' }}</span>
+      <div class="filtro-header" (click)="toggleDesplegable('tipologia')"> <!--La cabecera siempre está visible-->
+        <span class="label">Tipología de Aplicación</span> <!--Título-->
+        <span class="valor-seleccionado">Backend Spring Boot</span><!--Valor actual-->
+        <span class="flecha">{{ desplegables.tipologia ? '▲' : '▼' }}</span><!--Flecha indicadora-->
       </div>
-      @if (desplegables.tipologia) {
+      @if (desplegables.tipologia) { <!--Condicionante que dice que si el filtro tipología está abierto, las opciones que saldrán serán las siguientes-->
         <div class="filtro-opciones">
           <div class="opcion">Java Spring Boot</div>
           <div class="opcion">Node.js</div>
@@ -21,7 +21,7 @@
       }
     </div>
 
-    <!-- Columna 2: Plataforma -->
+    <!-- Columna 2 --- Plataforma -->
     <div class="filtro-columna">
       <div class="filtro-header" (click)="toggleDesplegable('plataforma')">
         <span class="label">Plataforma Cloud</span>
@@ -38,7 +38,7 @@
       }
     </div>
 
-    <!-- Columna 3: Dominio -->
+    <!-- Columna 3 --- Dominio -->
     <div class="filtro-columna">
       <div class="filtro-header" (click)="toggleDesplegable('dominio')">
         <span class="label">Dominio Tecnológico</span>
@@ -57,9 +57,9 @@
     </div>
   </div>
 
-  <!-- TABLA DE TECNOLOGÍAS (CON NUEVAS COLUMNAS) -->
+  <!-- Tabla de tecnologías) -->
   <table class="tabla-tecnologias">
-    <thead>
+    <thead> <!--Cabecera de la tabla-->
       <tr>
         <th>Tecnología</th>
         <th>Proveedor</th>
@@ -71,20 +71,20 @@
         <th>Acciones</th>
       </tr>
     </thead>
-    <tbody>
-      @for (tech of tecnologias; track tech.nombre) {
+    <tbody> <!--Cuerpo de la tabla con los datos-->
+      @for (tech of tecnologias; track tech.nombre) { <!--Se repite para cada elemento del array y ayuda a Angular a encontrar  cada fila-->
         <tr>
-          <td><strong>{{ tech.nombre }}</strong></td>
+          <td><strong>{{ tech.nombre }}</strong></td> <!--Muestra en cada iteración el nombre de la tecnología-->
           <td>
-            <span class="proveedor-badge">{{ tech.proveedor }}</span>
+            <span class="proveedor-badge">{{ tech.proveedor }}</span> <!--Muestra el proveedor-->
           </td>
           <td>
-            <span class="estado-badge" [class]="tech.estado.toLowerCase()">
+            <span class="estado-badge" [class]="tech.estado.toLowerCase()"> <!--Añade una clase dinámica que muestra el estado que hace que si se elige activa, se ponga la clase "activa"-->
               {{ tech.estado }}
             </span>
           </td>
-          <!-- CHECKBOXES -->
-          <td class="checkbox-columna">
+          <!-- CHeckboxes -->
+          <td class="checkbox-columna"> <!--Marca o desmarca los Ceckboxes según el valor del booleano-->
             <input type="checkbox" class="checkbox-personalizado" [checked]="tech.permitido">
           </td>
           <td class="checkbox-columna">
@@ -94,14 +94,14 @@
             <input type="checkbox" class="checkbox-personalizado" [checked]="tech.obligatorio">
           </td>
           <td>
-            <button class="btn-editar">Editar</button>
+            <button class="btn-editar">Editar</button> <!--Botón que aún necesita implementación-->
           </td>
         </tr>
       }
     </tbody>
   </table>
 
-  <!-- BARRA DE ACCIONES INFERIOR -->
+  <!-- Acciones de añadir tecnología, guardar y cancelar -->
   <div class="acciones-inferiores">
     <button class="btn-add">
       <span class="icon">+</span> Añadir Tecnología
@@ -113,12 +113,12 @@
     </div>
   </div>
 
-  <!-- SECCIÓN DE AUDITORÍA -->
+  <!-- Auditoría -->
   <div class="auditoria">
     <h2>Auditoría de Cambios</h2>
     
     <div class="cambios-lista">
-      @for (cambio of cambios; track cambio.fecha) {
+      @for (cambio of cambios; track cambio.fecha) { <!--Bucle para mostrar cambios-->
         <div class="cambio-item">
           <span class="fecha">{{ cambio.fecha }}</span>
           <span class="usuario">{{ cambio.usuario }}</span>
