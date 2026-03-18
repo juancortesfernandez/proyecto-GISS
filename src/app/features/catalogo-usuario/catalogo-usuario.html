@@ -1,23 +1,23 @@
 <div class="usuario-container">
-  <!-- CABECERA -->
   <header class="cabecera">
-    <h1>Catálogo Tecnológico</h1>
+    <h1>Catálogo Tecnológico Usuarios</h1>
     <p class="subtitulo">Consulta de tecnologías disponibles en la empresa</p>
   </header>
 
-  <!-- FILTROS EN 3 COLUMNAS CON DESPLEGABLES -->
+  <!-- 3 filtros en coumnas de desplegables -->
   <div class="filtros-grid">
     
     <!-- Columna 1: Tipología -->
     <div class="filtro-columna">
-      <div class="filtro-header" (click)="toggleDesplegable('tipologia')">
+      <div class="filtro-header" (click)="toggleDesplegable('tipologia')"> <!-- AL ahcer click, ejecuta el método del archivo .ts, pasándole el argumento, en este caso
+                                                                            de tipología-->
         <span class="label">Tipología de Aplicación</span>
         <span class="valor-seleccionado">Backend Spring Boot</span>
-        <span class="flecha">{{ desplegables.tipologia ? '▲' : '▼' }}</span>
+        <span class="flecha">{{ desplegables.tipologia ? '▲' : '▼' }}</span> <!--Si está abierto muestra una flecha, sino la otra-->
       </div>
-      @if (desplegables.tipologia) {
+      @if (desplegables.tipologia) { <!--Si este filtro está abierto, muestra las opciones-->
         <div class="filtro-opciones">
-          <div class="opcion" (click)="seleccionarOpcion('tipologia', 'Java Spring Boot')">Java Spring Boot</div>
+          <div class="opcion" (click)="seleccionarOpcion('tipologia', 'Java Spring Boot')">Java Spring Boot</div> <!--Al seleccionar una opción, se pone ese valor-->
           <div class="opcion" (click)="seleccionarOpcion('tipologia', 'Node.js')">Node.js</div>
           <div class="opcion" (click)="seleccionarOpcion('tipologia', 'Python Django')">Python Django</div>
           <div class="opcion" (click)="seleccionarOpcion('tipologia', '.NET Core')">.NET Core</div>
@@ -62,18 +62,18 @@
   </div>
 
   <!-- BUSCADOR -->
-  <div class="buscador-container">
+  <div class="buscador-container"> <!--Conecta con textoBusqueda de .ts-->
     <input 
       type="text" 
-      [(ngModel)]="textoBusqueda" 
+      [(ngModel)]="textoBusqueda"
       placeholder="Buscar tecnología por nombre o proveedor..."
       class="buscador-input">
-    @if (textoBusqueda) {
-      <button class="buscador-clear" (click)="textoBusqueda = ''">✕</button>
+    @if (textoBusqueda) { <!--Si hay texto escrito aparece el botón de vaciar buscador-->
+      <button class="buscador-clear" (click)="textoBusqueda = ''">✕</button> <!--Vacía el buscador-->
     }
   </div>
 
-  <!-- TABLA DE TECNOLOGÍAS -->
+  <!-- Tabala de tecnologías -->
   <table class="tabla-tecnologias">
     <thead>
       <tr>

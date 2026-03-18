@@ -15,12 +15,12 @@ import { FormsModule } from '@angular/forms';
 export class CatalogoComponent { // Este componente está disponible para que otros lo usen
 
   tecnologias = [ // Array con tecnologías de prueba
-    { id: 1, nombre: 'PostgreSQL', proveedor: 'Open Source', estado: 'Activa', permitido: false, recomendado: false, obligatorio: false},
-    { id: 2, nombre: 'Amazon Aurora', proveedor: 'AWS', estado: 'Activa', permitido: false, recomendado: false, obligatorio: false},
-    { id: 3, nombre: 'Oracle Database', proveedor: 'Oracle', estado: 'Deprecated', permitido: false, recomendado: false, obligatorio: false},
-    { id: 4, nombre: 'MySQL', proveedor: 'Oracle', estado: 'Hold', permitido: false, recomendado: false, obligatorio: false},
-    { id: 5, nombre: 'DynamoDB', proveedor: 'AWS', estado: 'Activa', permitido: false, recomendado: false, obligatorio: false},
-    { id: 6, nombre: 'DB2', proveedor: 'IBM', estado: 'EOL', permitido: false, recomendado: false, obligatorio: false}
+    { id: 1, nombre: 'PostgreSQL', proveedor: 'Open Source', estado: 'Activa', permitido: false, recomendado: false, obligatorio: false },
+    { id: 2, nombre: 'Amazon Aurora', proveedor: 'AWS', estado: 'Activa', permitido: false, recomendado: false, obligatorio: false },
+    { id: 3, nombre: 'Oracle Database', proveedor: 'Oracle', estado: 'Deprecated', permitido: false, recomendado: false, obligatorio: false },
+    { id: 4, nombre: 'MySQL', proveedor: 'Oracle', estado: 'Hold', permitido: false, recomendado: false, obligatorio: false },
+    { id: 5, nombre: 'DynamoDB', proveedor: 'AWS', estado: 'Activa', permitido: false, recomendado: false, obligatorio: false },
+    { id: 6, nombre: 'DB2', proveedor: 'IBM', estado: 'EOL', permitido: false, recomendado: false, obligatorio: false }
   ];
 
   cambios = [ // Array ejemplos de prueba historial de cambios
@@ -44,19 +44,20 @@ export class CatalogoComponent { // Este componente está disponible para que ot
     dominio: 'Base de Datos'
   };
 
-  // Para el buscador (NUEVO)
+  // Buscador
   textoBusqueda: string = '';
 
   // Propiedades para el modal, para controlar si el modal está visible o no
   mostrarModal: boolean = false;
   techEnEdicion: any = null;
+  modoTitulo: string = 'Editar Tecnología';  // Controla el título del modal
 
-  // Getter para filtrar tecnologías (NUEVO)
+  // Getter para filtrar por tecnología o proveedor
   get tecnologiasFiltradas() {
     if (!this.textoBusqueda) return this.tecnologias;
-    
+
     const busqueda = this.textoBusqueda.toLowerCase();
-    return this.tecnologias.filter(tech => 
+    return this.tecnologias.filter(tech =>
       tech.nombre.toLowerCase().includes(busqueda) ||
       tech.proveedor.toLowerCase().includes(busqueda)
     );
@@ -64,7 +65,7 @@ export class CatalogoComponent { // Este componente está disponible para que ot
 
   toggleDesplegable(seccion: 'tipologia' | 'plataforma' | 'dominio') { // Función para cambiar de estado con 3 parámetros que recibe del HTML
     this.desplegables[seccion] = !this.desplegables[seccion]; // Invierte la elección es decir que si tengo seleccionado uno, ese uno se vuelve true
-                                                              // mientras que el resto se vuelve false
+    // mientras que el resto se vuelve false
   }
 
   // NUEVO: Método para seleccionar una opción del desplegable
@@ -73,29 +74,49 @@ export class CatalogoComponent { // Este componente está disponible para que ot
     this.desplegables[seccion] = false; // Cierra el desplegable
   }
 
-  // Métodos para el modal
-  abrirModal(tech: any) { // Recibe un parámetro tech y este método se ejecutará cuando se haga click en el botón editar.
-    this.techEnEdicion = { ...tech }; // Variable que pertenece a la clase (this), que crea una copia e indica la tecnología que se está editando ahora mismo.
-                                    // el operador ...spread, lo que hace es que coge todas las propiedades de tech y las pone en un objeto nuevo, haciendo una copia.
-                                    // Esto lo hago por si el usuario cancela la operación, así el original se mantiene.
-    this.mostrarModal = true; // Lo hacemos visible
+  // Método para ABRIR modal en modo EDICIÓN
+  abrirModal(tech: any) {
+    this.techEnEdicion = { ...tech }; // Crea una copia
+    this.mostrarModal = true;
+    this.modoTitulo = 'Editar Tecnología';
+  }
+
+  // Método para ABRIR modal en modo NUEVO
+  abrirModalNuevo() {
+    // Crear una nueva tecnología con valores por defecto
+    this.techEnEdicion = {
+      id: this.tecnologias.length + 1, // ID temporal (luego lo dará el backend)
+      nombre: '',
+      proveedor: '',
+      estado: 'Activa',
+      permitido: false,
+      recomendado: false,
+      obligatorio: false
+    };
+    this.mostrarModal = true;
+    this.modoTitulo = 'Añadir Nueva Tecnología';
   }
 
   cerrarModal() {
     this.mostrarModal = false;
-    this.techEnEdicion = null; // Ponemos en null la variable que se ha usado (o no) antes
+    this.techEnEdicion = null;
   }
 
+  // Método para GUARDAR (tanto edición como nuevo)
   guardarModal() {
-    // Aquí irá la llamada al backend
-    console.log('Guardando:', this.techEnEdicion);
-    
-    // Actualizar en la tabla (temporal)
-    const index = this.tecnologias.findIndex(t => t.id === this.techEnEdicion.id);
-    if (index !== -1) {
-      this.tecnologias[index] = { ...this.techEnEdicion };
+    if (this.modoTitulo === 'Añadir Nueva Tecnología') {
+      // Es una NUEVA tecnología
+      this.tecnologias.push({ ...this.techEnEdicion });
+      console.log('Añadiendo nueva tecnología:', this.techEnEdicion);
+    } else {
+      // Es una EDICIÓN
+      const index = this.tecnologias.findIndex(t => t.id === this.techEnEdicion.id);
+      if (index !== -1) {
+        this.tecnologias[index] = { ...this.techEnEdicion };
+      }
+      console.log('Editando tecnología:', this.techEnEdicion);
     }
-    
+
     this.cerrarModal();
   }
 }

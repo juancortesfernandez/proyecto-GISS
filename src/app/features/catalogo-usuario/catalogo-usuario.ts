@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common'; // Para if y bucles
+import { FormsModule } from '@angular/forms'; // Para escribir en los inputs
 
 @Component({
   selector: 'app-catalogo-usuario',
@@ -33,8 +33,8 @@ export class CatalogoUsuarioComponent {
     dominio: false
   };
 
-  textoBusqueda: string = '';
-  techSeleccionada: any = null;
+  textoBusqueda: string = ''; // Se conecta con html para el buscador y cuando el usuario escribe, se actualiza esta propiedad
+  techSeleccionada: any = null; // Guarda la tecnología seleccionada para mostrar en el modal
 
   // Alternar apertura/cierre de desplegables
   toggleDesplegable(seccion: 'tipologia' | 'plataforma' | 'dominio') {
@@ -49,16 +49,16 @@ export class CatalogoUsuarioComponent {
 
   // Filtro de búsqueda
   get tecnologiasFiltradas() {
-    if (!this.textoBusqueda) return this.tecnologias;
+    if (!this.textoBusqueda) return this.tecnologias; // Si el buscador está vacío, muestra todas
     
-    const busqueda = this.textoBusqueda.toLowerCase();
+    const busqueda = this.textoBusqueda.toLowerCase(); // filter crea un nuevo array solo con las tecnologías que cumplen esa condición
     return this.tecnologias.filter(tech => 
       tech.nombre.toLowerCase().includes(busqueda) ||
       tech.proveedor.toLowerCase().includes(busqueda)
     );
   }
 
-  verDetalles(tech: any) {
+  verDetalles(tech: any) { // Guarda la tecnología seleccionada para que el modal pueda mostrarla
     this.techSeleccionada = tech;
   }
 
