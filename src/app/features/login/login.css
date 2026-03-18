@@ -78,11 +78,3 @@ input:focus {
 .btn-login:hover {
   background-color: #1d4ed8;
 }
-
-/* OPCIONAL: TEXTO SECUNDARIO */
-.login-footer {
-  margin-top: 1rem;
-  font-size: 0.85rem;
-  color: #64748b;
-  text-align: center;
-}

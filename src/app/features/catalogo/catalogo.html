@@ -173,27 +173,6 @@
         </select>
       </div>
 
-      <div class="modal-checkbox">
-        <label>
-          <input type="checkbox" [(ngModel)]="techEnEdicion.permitido"> <!-- [(ngModel)]: Significa que se comunica de TypeScript a HTML [], y de HTML a TypeScript-->
-          Permitido
-        </label>
-      </div>
-
-      <div class="modal-checkbox">
-        <label>
-          <input type="checkbox" [(ngModel)]="techEnEdicion.recomendado">
-          Recomendado
-        </label>
-      </div>
-
-      <div class="modal-checkbox">
-        <label>
-          <input type="checkbox" [(ngModel)]="techEnEdicion.obligatorio">
-          Obligatorio
-        </label>
-      </div>
-
       <div class="modal-botones">
         <button class="btn-guardar" (click)="guardarModal()">Guardar</button>
         <button class="btn-cancelar" (click)="cerrarModal()">Cancelar</button>
