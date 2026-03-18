@@ -1,19 +1,29 @@
-/* Contenedor principal */
-.catalogo-container {
+/* ===== CONTENEDOR PRINCIPAL ===== */
+.usuario-container {
   max-width: 1200px;
   margin: 2rem auto;
   padding: 0 1rem;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
 
-/* Título principal */
-h1 {
+/* ===== CABECERA ===== */
+.cabecera {
+  margin-bottom: 2rem;
+}
+
+.cabecera h1 {
   font-size: 2rem;
   color: #1e293b;
-  margin-bottom: 1.5rem;
+  margin-bottom: 0.5rem;
   font-weight: 600;
 }
 
+.subtitulo {
+  color: #64748b;
+  font-size: 1rem;
+}
+
+/* ===== FILTROS EN 3 COLUMNAS (ESTILO ADMIN) ===== */
 /* ===== FILTROS EN 3 COLUMNAS ===== */
 .filtros-grid {
   display: grid;
@@ -54,6 +64,9 @@ h1 {
   font-weight: 500;
   flex: 1;
   margin: 0 0.5rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .filtro-header .flecha {
@@ -63,7 +76,7 @@ h1 {
   text-align: center;
 }
 
-/* ===== OPCIONES DESPLEGABLES ===== */
+/* OPCIONES DESPLEGABLES - FLOTAN SIN AFECTAR A OTROS */
 .filtro-opciones {
   position: absolute;
   top: 100%;
@@ -76,7 +89,7 @@ h1 {
   box-shadow: 0 4px 12px rgba(0,0,0,0.15);
   z-index: 1000;
   margin-top: 0.25rem;
-  max-height: 200px;
+  max-height: 250px;
   overflow-y: auto;
 }
 
@@ -92,6 +105,13 @@ h1 {
 .opcion:hover {
   background-color: #2563eb;
   color: white;
+}
+
+.filtro-header .flecha {
+  color: #64748b;
+  font-size: 0.875rem;
+  width: 20px;                /* Ancho fijo para la flecha */
+  text-align: center;
 }
 
 /* ===== BUSCADOR ===== */
@@ -128,17 +148,9 @@ h1 {
   cursor: pointer;
   font-size: 1rem;
   padding: 0.25rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  transition: all 0.2s;
 }
 
 .buscador-clear:hover {
-  background-color: #f1f5f9;
   color: #64748b;
 }
 
@@ -216,18 +228,19 @@ h1 {
   vertical-align: middle;
 }
 
-.checkbox-personalizado {
+.checkbox-visual {
   width: 18px;
   height: 18px;
-  cursor: pointer;
+  opacity: 0.8;
   accent-color: #2563eb;
+  cursor: default;
 }
 
-/* ===== BOTÓN EDITAR ===== */
-.btn-editar {
+/* ===== BOTÓN VER DETALLES ===== */
+.btn-ver {
   background-color: transparent;
-  border: 1px solid #cbd5e1;
-  color: #475569;
+  border: 1px solid #2563eb;
+  color: #2563eb;
   padding: 0.375rem 1rem;
   border-radius: 6px;
   font-size: 0.875rem;
@@ -235,153 +248,32 @@ h1 {
   transition: all 0.2s;
 }
 
-.btn-editar:hover {
-  background-color: #f1f5f9;
-  border-color: #94a3b8;
-}
-
-/* ===== BARRA DE ACCIONES INFERIOR ===== */
-.acciones-inferiores {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin: 2rem 0;
-  padding: 1rem 0;
-  border-top: 1px solid #e2e8f0;
-  border-bottom: 1px solid #e2e8f0;
-}
-
-.btn-add {
+.btn-ver:hover {
   background-color: #2563eb;
   color: white;
-  border: none;
-  padding: 0.75rem 1.5rem;
+}
+
+/* ===== INFO ACTUALIZACIÓN ===== */
+.info-actualizacion {
+  margin-top: 2rem;
+  padding: 1rem;
+  background-color: #f8fafc;
   border-radius: 8px;
-  font-size: 1rem;
-  font-weight: 500;
-  cursor: pointer;
-  display: inline-flex;
+  color: #64748b;
+  display: flex;
   align-items: center;
   gap: 0.5rem;
-  transition: background-color 0.2s;
-}
-
-.btn-add:hover {
-  background-color: #1d4ed8;
-}
-
-.icon {
-  font-size: 1.25rem;
-  font-weight: bold;
-}
-
-.botones-guardar-cancelar {
-  display: flex;
-  gap: 1rem;
-}
-
-.btn-guardar {
-  background-color: #2563eb;
-  color: white;
-  border: none;
-  padding: 0.75rem 2rem;
-  border-radius: 8px;
-  font-size: 1rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: background-color 0.2s;
-}
-
-.btn-guardar:hover {
-  background-color: #1d4ed8;
-}
-
-.btn-cancelar {
-  background-color: white;
-  color: #64748b;
-  border: 1px solid #cbd5e1;
-  padding: 0.75rem 2rem;
-  border-radius: 8px;
-  font-size: 1rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.btn-cancelar:hover {
-  background-color: #f1f5f9;
-  border-color: #94a3b8;
-}
-
-/* ===== AUDITORÍA ===== */
-.auditoria {
-  background-color: white;
-  border: 1px solid #e2e8f0;
-  border-radius: 12px;
-  padding: 1.5rem;
-  margin-top: 2rem;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-}
-
-.auditoria h2 {
-  font-size: 1.25rem;
-  color: #1e293b;
-  margin: 0 0 1.5rem 0;
-  font-weight: 600;
-}
-
-.cambios-lista {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-  margin-bottom: 1.5rem;
-}
-
-.cambio-item {
-  display: grid;
-  grid-template-columns: 100px 100px 1fr;
-  gap: 1rem;
-  padding: 0.5rem 0;
-  border-bottom: 1px solid #f1f5f9;
-  font-size: 0.95rem;
-}
-
-.cambio-item .fecha {
-  color: #64748b;
-  font-family: monospace;
-}
-
-.cambio-item .usuario {
-  color: #2563eb;
-  font-weight: 500;
-}
-
-.cambio-item .descripcion {
-  color: #334155;
-}
-
-.ver-historial {
-  color: #2563eb;
-  text-decoration: none;
   font-size: 0.875rem;
-  font-weight: 500;
-  display: inline-block;
-  transition: color 0.2s;
 }
 
-.ver-historial:hover {
-  color: #1d4ed8;
-  text-decoration: underline;
-}
-
-/* ===== MODAL ===== */
+/* ===== MODAL DE DETALLES ===== */
 .modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0,0,0,0.5);
+  background-color: rgba(0, 0, 0, 0.5);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -396,7 +288,7 @@ h1 {
   width: 90%;
   max-height: 90vh;
   overflow-y: auto;
-  box-shadow: 0 20px 25px -5px rgba(0,0,0,0.2);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
 }
 
 .modal-contenido h2 {
@@ -405,36 +297,50 @@ h1 {
   margin-bottom: 1.5rem;
 }
 
-.modal-campo {
-  margin-bottom: 1rem;
+.detalles-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+  margin: 2rem 0;
 }
 
-.modal-campo label {
-  display: block;
+.detalle-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.detalle-label {
   font-size: 0.875rem;
   color: #64748b;
-  margin-bottom: 0.25rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
-.modal-input {
-  width: 100%;
-  padding: 0.5rem;
-  border: 1px solid #cbd5e1;
-  border-radius: 6px;
-  font-size: 1rem;
+.detalle-valor {
+  font-size: 1.125rem;
+  color: #0f172a;
+  font-weight: 500;
 }
 
-
-.modal-checkbox label {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  cursor: pointer;
-}
-
-.modal-botones {
+.modal-acciones {
   display: flex;
   justify-content: flex-end;
-  gap: 1rem;
   margin-top: 2rem;
+}
+
+.btn-cerrar {
+  background-color: #2563eb;
+  color: white;
+  border: none;
+  padding: 0.75rem 2rem;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.btn-cerrar:hover {
+  background-color: #1d4ed8;
 }

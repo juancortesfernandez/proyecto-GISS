@@ -1,0 +1,156 @@
+<div class="usuario-container">
+  <header class="cabecera">
+    <h1>Catálogo Tecnológico Usuarios</h1>
+    <p class="subtitulo">Consulta de tecnologías disponibles en la empresa</p>
+  </header>
+
+  <!-- 3 filtros en coumnas de desplegables -->
+  <div class="filtros-grid">
+    
+    <!-- Columna 1: Tipología -->
+    <div class="filtro-columna">
+      <div class="filtro-header" (click)="toggleDesplegable('tipologia')"> <!-- AL ahcer click, ejecuta el método del archivo .ts, pasándole el argumento, en este caso
+                                                                            de tipología-->
+        <span class="label">Tipología de Aplicación</span>
+        <span class="valor-seleccionado">Backend Spring Boot</span>
+        <span class="flecha">{{ desplegables.tipologia ? '▲' : '▼' }}</span> <!--Si está abierto muestra una flecha, sino la otra-->
+      </div>
+      @if (desplegables.tipologia) { <!--Si este filtro está abierto, muestra las opciones-->
+        <div class="filtro-opciones">
+          <div class="opcion" (click)="seleccionarOpcion('tipologia', 'Java Spring Boot')">Java Spring Boot</div> <!--Al seleccionar una opción, se pone ese valor-->
+          <div class="opcion" (click)="seleccionarOpcion('tipologia', 'Node.js')">Node.js</div>
+          <div class="opcion" (click)="seleccionarOpcion('tipologia', 'Python Django')">Python Django</div>
+          <div class="opcion" (click)="seleccionarOpcion('tipologia', '.NET Core')">.NET Core</div>
+        </div>
+      }
+    </div>
+
+    <!-- Columna 2: Plataforma -->
+    <div class="filtro-columna">
+      <div class="filtro-header" (click)="toggleDesplegable('plataforma')">
+        <span class="label">Plataforma Cloud</span>
+        <span class="valor-seleccionado">AWS</span>
+        <span class="flecha">{{ desplegables.plataforma ? '▲' : '▼' }}</span>
+      </div>
+      @if (desplegables.plataforma) {
+        <div class="filtro-opciones">
+          <div class="opcion" (click)="seleccionarOpcion('plataforma', 'AWS')">AWS (seleccionado)</div>
+          <div class="opcion" (click)="seleccionarOpcion('plataforma', 'Azure')">Azure</div>
+          <div class="opcion" (click)="seleccionarOpcion('plataforma', 'Google Cloud')">Google Cloud</div>
+          <div class="opcion" (click)="seleccionarOpcion('plataforma', 'On-Premise')">On-Premise</div>
+        </div>
+      }
+    </div>
+
+    <!-- Columna 3: Dominio -->
+    <div class="filtro-columna">
+      <div class="filtro-header" (click)="toggleDesplegable('dominio')">
+        <span class="label">Dominio Tecnológico</span>
+        <span class="valor-seleccionado">Base de Datos</span>
+        <span class="flecha">{{ desplegables.dominio ? '▲' : '▼' }}</span>
+      </div>
+      @if (desplegables.dominio) {
+        <div class="filtro-opciones">
+          <div class="opcion" (click)="seleccionarOpcion('dominio', 'Base de Datos')">Base de Datos (seleccionado)</div>
+          <div class="opcion" (click)="seleccionarOpcion('dominio', 'Frontend')">Frontend</div>
+          <div class="opcion" (click)="seleccionarOpcion('dominio', 'Backend')">Backend</div>
+          <div class="opcion" (click)="seleccionarOpcion('dominio', 'DevOps')">DevOps</div>
+          <div class="opcion" (click)="seleccionarOpcion('dominio', 'Seguridad')">Seguridad</div>
+        </div>
+      }
+    </div>
+  </div>
+
+  <!-- BUSCADOR -->
+  <div class="buscador-container"> <!--Conecta con textoBusqueda de .ts-->
+    <input 
+      type="text" 
+      [(ngModel)]="textoBusqueda"
+      placeholder="Buscar tecnología por nombre o proveedor..."
+      class="buscador-input">
+    @if (textoBusqueda) { <!--Si hay texto escrito aparece el botón de vaciar buscador-->
+      <button class="buscador-clear" (click)="textoBusqueda = ''">✕</button> <!--Vacía el buscador-->
+    }
+  </div>
+
+  <!-- Tabala de tecnologías -->
+  <table class="tabla-tecnologias">
+    <thead>
+      <tr>
+        <th>Tecnología</th>
+        <th>Proveedor</th>
+        <th>Estado</th>
+        <th>Permitido</th>
+        <th>Recomendado</th>
+        <th>Obligatorio</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (tech of tecnologiasFiltradas; track tech.id) {
+        <tr>
+          <td><strong>{{ tech.nombre }}</strong></td>
+          <td>
+            <span class="proveedor-badge">{{ tech.proveedor }}</span>
+          </td>
+          <td>
+            <span class="estado-badge" [class]="tech.estado.toLowerCase()">
+              {{ tech.estado }}
+            </span>
+          </td>
+          <td class="checkbox-columna">
+            <input type="checkbox" [checked]="tech.permitido" disabled class="checkbox-visual">
+          </td>
+          <td class="checkbox-columna">
+            <input type="checkbox" [checked]="tech.recomendado" disabled class="checkbox-visual">
+          </td>
+          <td class="checkbox-columna">
+            <input type="checkbox" [checked]="tech.obligatorio" disabled class="checkbox-visual">
+          </td>
+        </tr>
+      }
+    </tbody>
+  </table>
+
+
+  <!-- MODAL DE DETALLES -->
+  @if (techSeleccionada) {
+    <div class="modal-overlay" (click)="cerrarDetalles()">
+      <div class="modal-contenido" (click)="$event.stopPropagation()">
+        <h2>{{ techSeleccionada.nombre }}</h2>
+        
+        <div class="detalles-grid">
+          <div class="detalle-item">
+            <span class="detalle-label">Proveedor</span>
+            <span class="detalle-valor">{{ techSeleccionada.proveedor }}</span>
+          </div>
+          
+          <div class="detalle-item">
+            <span class="detalle-label">Estado</span>
+            <span class="estado-badge" [class]="techSeleccionada.estado.toLowerCase()">
+              {{ techSeleccionada.estado }}
+            </span>
+          </div>
+          
+          <div class="detalle-item">
+            <span class="detalle-label">Permitido</span>
+            <span class="detalle-valor">{{ techSeleccionada.permitido ? '✅ Sí' : '❌ No' }}</span>
+          </div>
+          
+          <div class="detalle-item">
+            <span class="detalle-label">Recomendado</span>
+            <span class="detalle-valor">{{ techSeleccionada.recomendado ? '✅ Sí' : '❌ No' }}</span>
+          </div>
+          
+          <div class="detalle-item">
+            <span class="detalle-label">Obligatorio</span>
+            <span class="detalle-valor">{{ techSeleccionada.obligatorio ? '✅ Sí' : '❌ No' }}</span>
+          </div>
+        </div>
+
+        <div class="modal-acciones">
+          <button class="btn-cerrar" (click)="cerrarDetalles()">Cerrar</button>
+        </div>
+      </div>
+    </div>
+  }
+</div>
