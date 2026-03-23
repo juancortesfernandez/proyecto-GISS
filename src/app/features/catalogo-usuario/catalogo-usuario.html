@@ -4,23 +4,22 @@
     <p class="subtitulo">Consulta de tecnologías disponibles en la empresa</p>
   </header>
 
-  <!-- 3 filtros en coumnas de desplegables -->
+  <!-- 3 filtros en columnas de desplegables -->
   <div class="filtros-grid">
     
     <!-- Columna 1: Tipología -->
     <div class="filtro-columna">
-      <div class="filtro-header" (click)="toggleDesplegable('tipologia')"> <!-- AL ahcer click, ejecuta el método del archivo .ts, pasándole el argumento, en este caso
-                                                                            de tipología-->
+      <div class="filtro-header" (click)="toggleDesplegable('tipologia')">
         <span class="label">Tipología de Aplicación</span>
-        <span class="valor-seleccionado">Backend Spring Boot</span>
-        <span class="flecha">{{ desplegables.tipologia ? '▲' : '▼' }}</span> <!--Si está abierto muestra una flecha, sino la otra-->
+        <span class="valor-seleccionado">{{ filtros.tipologia }}</span>
+        <span class="flecha">{{ desplegables.tipologia ? '▲' : '▼' }}</span>
       </div>
-      @if (desplegables.tipologia) { <!--Si este filtro está abierto, muestra las opciones-->
+      @if (desplegables.tipologia) {
         <div class="filtro-opciones">
-          <div class="opcion" (click)="seleccionarOpcion('tipologia', 'Java Spring Boot')">Java Spring Boot</div> <!--Al seleccionar una opción, se pone ese valor-->
-          <div class="opcion" (click)="seleccionarOpcion('tipologia', 'Node.js')">Node.js</div>
-          <div class="opcion" (click)="seleccionarOpcion('tipologia', 'Python Django')">Python Django</div>
-          <div class="opcion" (click)="seleccionarOpcion('tipologia', '.NET Core')">.NET Core</div>
+          <div class="opcion" (click)="seleccionarOpcion('tipologia', 'Backend Spring Boot')">Backend Spring Boot</div>
+          <div class="opcion" (click)="seleccionarOpcion('tipologia', 'Frontend Angular')">Frontend Angular</div>
+          <div class="opcion" (click)="seleccionarOpcion('tipologia', 'Low Code')">Low Code</div>
+          <div class="opcion" (click)="seleccionarOpcion('tipologia', 'Batch Procesos')">Batch Procesos</div>
         </div>
       }
     </div>
@@ -29,15 +28,15 @@
     <div class="filtro-columna">
       <div class="filtro-header" (click)="toggleDesplegable('plataforma')">
         <span class="label">Plataforma Cloud</span>
-        <span class="valor-seleccionado">AWS</span>
+        <span class="valor-seleccionado">{{ filtros.plataforma }}</span>
         <span class="flecha">{{ desplegables.plataforma ? '▲' : '▼' }}</span>
       </div>
       @if (desplegables.plataforma) {
         <div class="filtro-opciones">
-          <div class="opcion" (click)="seleccionarOpcion('plataforma', 'AWS')">AWS (seleccionado)</div>
-          <div class="opcion" (click)="seleccionarOpcion('plataforma', 'Azure')">Azure</div>
-          <div class="opcion" (click)="seleccionarOpcion('plataforma', 'Google Cloud')">Google Cloud</div>
-          <div class="opcion" (click)="seleccionarOpcion('plataforma', 'On-Premise')">On-Premise</div>
+          <div class="opcion" (click)="seleccionarOpcion('plataforma', 'Amazon Web Services')">Amazon Web Services (AWS)</div>
+          <div class="opcion" (click)="seleccionarOpcion('plataforma', 'Microsoft Azure')">Microsoft Azure</div>
+          <div class="opcion" (click)="seleccionarOpcion('plataforma', 'Google Cloud Platform')">Google Cloud Platform</div>
+          <div class="opcion" (click)="seleccionarOpcion('plataforma', 'On Premise')">On Premise</div>
         </div>
       }
     </div>
@@ -46,34 +45,33 @@
     <div class="filtro-columna">
       <div class="filtro-header" (click)="toggleDesplegable('dominio')">
         <span class="label">Dominio Tecnológico</span>
-        <span class="valor-seleccionado">Base de Datos</span>
+        <span class="valor-seleccionado">{{ filtros.dominio }}</span>
         <span class="flecha">{{ desplegables.dominio ? '▲' : '▼' }}</span>
       </div>
       @if (desplegables.dominio) {
         <div class="filtro-opciones">
-          <div class="opcion" (click)="seleccionarOpcion('dominio', 'Base de Datos')">Base de Datos (seleccionado)</div>
-          <div class="opcion" (click)="seleccionarOpcion('dominio', 'Frontend')">Frontend</div>
           <div class="opcion" (click)="seleccionarOpcion('dominio', 'Backend')">Backend</div>
-          <div class="opcion" (click)="seleccionarOpcion('dominio', 'DevOps')">DevOps</div>
-          <div class="opcion" (click)="seleccionarOpcion('dominio', 'Seguridad')">Seguridad</div>
+          <div class="opcion" (click)="seleccionarOpcion('dominio', 'Frontend')">Frontend</div>
+          <div class="opcion" (click)="seleccionarOpcion('dominio', 'Base de Datos')">Base de Datos</div>
+          <div class="opcion" (click)="seleccionarOpcion('dominio', 'Mensajería')">Mensajería</div>
         </div>
       }
     </div>
   </div>
 
   <!-- BUSCADOR -->
-  <div class="buscador-container"> <!--Conecta con textoBusqueda de .ts-->
+  <div class="buscador-container">
     <input 
       type="text" 
       [(ngModel)]="textoBusqueda"
       placeholder="Buscar tecnología por nombre o proveedor..."
       class="buscador-input">
-    @if (textoBusqueda) { <!--Si hay texto escrito aparece el botón de vaciar buscador-->
-      <button class="buscador-clear" (click)="textoBusqueda = ''">✕</button> <!--Vacía el buscador-->
+    @if (textoBusqueda) {
+      <button class="buscador-clear" (click)="textoBusqueda = ''">✕</button>
     }
   </div>
 
-  <!-- Tabala de tecnologías -->
+  <!-- Tabla de tecnologías -->
   <table class="tabla-tecnologias">
     <thead>
       <tr>
@@ -87,14 +85,14 @@
     </thead>
     <tbody>
       @for (tech of tecnologiasFiltradas; track tech.id) {
-        <tr>
+        <tr (click)="verDetalles(tech)" style="cursor: pointer;">
           <td><strong>{{ tech.nombre }}</strong></td>
           <td>
             <span class="proveedor-badge">{{ tech.proveedor }}</span>
           </td>
           <td>
-            <span class="estado-badge" [class]="tech.estado.toLowerCase()">
-              {{ tech.estado }}
+            <span class="estado-badge" [class]="(tech.estado || 'activa').toLowerCase()">
+              {{ tech.estado || 'Activa' }}
             </span>
           </td>
           <td class="checkbox-columna">
@@ -111,7 +109,6 @@
     </tbody>
   </table>
 
-
   <!-- MODAL DE DETALLES -->
   @if (techSeleccionada) {
     <div class="modal-overlay" (click)="cerrarDetalles()">
@@ -126,8 +123,8 @@
           
           <div class="detalle-item">
             <span class="detalle-label">Estado</span>
-            <span class="estado-badge" [class]="techSeleccionada.estado.toLowerCase()">
-              {{ techSeleccionada.estado }}
+            <span class="estado-badge" [class]="(techSeleccionada.estado || 'activa').toLowerCase()">
+              {{ techSeleccionada.estado || 'Activa' }}
             </span>
           </div>
           

@@ -1,183 +1,165 @@
-<div class="catalogo-container">
-  <!--Contenedor principal-->
-  <h1>Catálogo Tecnológico Administradores</h1>
+<div class="admin-container">
+  <header class="cabecera">
+    <h1>Catálogo Tecnológico - Administración</h1>
+    <p class="subtitulo">Gestión de tecnologías disponibles en la empresa</p>
+  </header>
 
-  <!--3 columnas para filtros-->
+  <!-- Botón Nueva Tecnología -->
+  <div class="nuevo-btn-container">
+    <button class="btn-nuevo" (click)="abrirModalNuevo()">+ Nueva Tecnología</button>
+  </div>
+
+  <!-- 3 filtros en columnas de desplegables -->
   <div class="filtros-grid">
-
-    <!-- Columna 1 --- Tipología -->
+    
+    <!-- Columna 1: Tipología -->
     <div class="filtro-columna">
       <div class="filtro-header" (click)="toggleDesplegable('tipologia')">
-        <!--La cabecera siempre está visible-->
-        <span class="label">Tipología de Aplicación</span> <!--Título-->
-        <span class="valor-seleccionado">{{ filtros.tipologia }}</span> <!--Valor actual DINÁMICO-->
-        <span class="flecha">{{ desplegables.tipologia ? '▲' : '▼' }}</span> <!--Flecha indicadora-->
+        <span class="label">Tipología de Aplicación</span>
+        <span class="valor-seleccionado">{{ filtros.tipologia }}</span>
+        <span class="flecha">{{ desplegables.tipologia ? '▲' : '▼' }}</span>
       </div>
-      @if (desplegables.tipologia) { <!--Condicionante que dice que si el filtro tipología está abierto, las opciones que saldrán serán las siguientes-->
-      <div class="filtro-opciones">
-        <div class="opcion" (click)="seleccionarOpcion('tipologia', 'Java Spring Boot')">Java Spring Boot</div>
-        <div class="opcion" (click)="seleccionarOpcion('tipologia', 'Node.js')">Node.js</div>
-        <div class="opcion" (click)="seleccionarOpcion('tipologia', 'Python Django')">Python Django</div>
-        <div class="opcion" (click)="seleccionarOpcion('tipologia', '.NET Core')">.NET Core</div>
-      </div>
+      @if (desplegables.tipologia) {
+        <div class="filtro-opciones">
+          <div class="opcion" (click)="seleccionarOpcion('tipologia', 'Backend Spring Boot')">Backend Spring Boot</div>
+          <div class="opcion" (click)="seleccionarOpcion('tipologia', 'Frontend Angular')">Frontend Angular</div>
+          <div class="opcion" (click)="seleccionarOpcion('tipologia', 'Low Code')">Low Code</div>
+          <div class="opcion" (click)="seleccionarOpcion('tipologia', 'Batch Procesos')">Batch Procesos</div>
+        </div>
       }
     </div>
 
-    <!-- Columna 2 --- Plataforma -->
+    <!-- Columna 2: Plataforma -->
     <div class="filtro-columna">
       <div class="filtro-header" (click)="toggleDesplegable('plataforma')">
         <span class="label">Plataforma Cloud</span>
-        <span class="valor-seleccionado">{{ filtros.plataforma }}</span> <!--Valor actual DINÁMICO-->
+        <span class="valor-seleccionado">{{ filtros.plataforma }}</span>
         <span class="flecha">{{ desplegables.plataforma ? '▲' : '▼' }}</span>
       </div>
       @if (desplegables.plataforma) {
-      <div class="filtro-opciones">
-        <div class="opcion" (click)="seleccionarOpcion('plataforma', 'AWS')">AWS (seleccionado)</div>
-        <div class="opcion" (click)="seleccionarOpcion('plataforma', 'Azure')">Azure</div>
-        <div class="opcion" (click)="seleccionarOpcion('plataforma', 'Google Cloud')">Google Cloud</div>
-        <div class="opcion" (click)="seleccionarOpcion('plataforma', 'On-Premise')">On-Premise</div>
-      </div>
+        <div class="filtro-opciones">
+          <div class="opcion" (click)="seleccionarOpcion('plataforma', 'Amazon Web Services')">Amazon Web Services (AWS)</div>
+          <div class="opcion" (click)="seleccionarOpcion('plataforma', 'Microsoft Azure')">Microsoft Azure</div>
+          <div class="opcion" (click)="seleccionarOpcion('plataforma', 'Google Cloud Platform')">Google Cloud Platform</div>
+          <div class="opcion" (click)="seleccionarOpcion('plataforma', 'On Premise')">On Premise</div>
+        </div>
       }
     </div>
 
-    <!-- Columna 3 --- Dominio -->
+    <!-- Columna 3: Dominio -->
     <div class="filtro-columna">
       <div class="filtro-header" (click)="toggleDesplegable('dominio')">
         <span class="label">Dominio Tecnológico</span>
-        <span class="valor-seleccionado">{{ filtros.dominio }}</span> <!--Valor actual DINÁMICO-->
+        <span class="valor-seleccionado">{{ filtros.dominio }}</span>
         <span class="flecha">{{ desplegables.dominio ? '▲' : '▼' }}</span>
       </div>
       @if (desplegables.dominio) {
-      <div class="filtro-opciones">
-        <div class="opcion" (click)="seleccionarOpcion('dominio', 'Base de Datos')">Base de Datos (seleccionado)</div>
-        <div class="opcion" (click)="seleccionarOpcion('dominio', 'Frontend')">Frontend</div>
-        <div class="opcion" (click)="seleccionarOpcion('dominio', 'Backend')">Backend</div>
-        <div class="opcion" (click)="seleccionarOpcion('dominio', 'DevOps')">DevOps</div>
-        <div class="opcion" (click)="seleccionarOpcion('dominio', 'Seguridad')">Seguridad</div>
-      </div>
+        <div class="filtro-opciones">
+          <div class="opcion" (click)="seleccionarOpcion('dominio', 'Backend')">Backend</div>
+          <div class="opcion" (click)="seleccionarOpcion('dominio', 'Frontend')">Frontend</div>
+          <div class="opcion" (click)="seleccionarOpcion('dominio', 'Base de Datos')">Base de Datos</div>
+          <div class="opcion" (click)="seleccionarOpcion('dominio', 'Mensajería')">Mensajería</div>
+        </div>
       }
     </div>
   </div>
 
   <!-- BUSCADOR -->
   <div class="buscador-container">
-    <input type="text"
-           [(ngModel)]="textoBusqueda"
-           placeholder="Buscar tecnología por nombre o proveedor..."
-           class="buscador-input">
+    <input 
+      type="text" 
+      [(ngModel)]="textoBusqueda"
+      placeholder="Buscar tecnología por nombre o proveedor..."
+      class="buscador-input">
     @if (textoBusqueda) {
-    <button class="buscador-clear" (click)="textoBusqueda = ''">✕</button>
+      <button class="buscador-clear" (click)="textoBusqueda = ''">✕</button>
     }
   </div>
 
   <!-- Tabla de tecnologías -->
   <table class="tabla-tecnologias">
     <thead>
-      <!--Cabecera de la tabla-->
       <tr>
         <th>Tecnología</th>
         <th>Proveedor</th>
+        <th>Versión</th>
         <th>Estado</th>
-        <!-- NUEVAS 3 COLUMNAS -->
-        <th>Permitido</th>
-        <th>Recomendado</th>
-        <th>Obligatorio</th>
         <th>Acciones</th>
       </tr>
     </thead>
     <tbody>
-      <!--Cuerpo de la tabla con los datos-->
-      @for (tech of tecnologiasFiltradas; track tech.id) { <!--Usamos tecnologiasFiltradas para que el buscador funcione-->
-      <tr>
-        <td><strong>{{ tech.nombre }}</strong></td> <!--Muestra en cada iteración el nombre de la tecnología-->
-        <td>
-          <span class="proveedor-badge">{{ tech.proveedor }}</span> <!--Muestra el proveedor-->
-        </td>
-        <td>
-          <span class="estado-badge" [class]="tech.estado.toLowerCase()">
-            <!--Añade una clase dinámica que muestra el estado que hace que si se elige activa, se ponga la clase "activa"-->
-            {{ tech.estado }}
-          </span>
-        </td>
-        <!-- Checkboxes -->
-        <td class="checkbox-columna">
-          <!--Marca o desmarca los Checkboxes según el valor del booleano-->
-          <input type="checkbox" class="checkbox-personalizado" [checked]="tech.permitido">
-        </td>
-        <td class="checkbox-columna">
-          <input type="checkbox" class="checkbox-personalizado" [checked]="tech.recomendado">
-        </td>
-        <td class="checkbox-columna">
-          <input type="checkbox" class="checkbox-personalizado" [checked]="tech.obligatorio">
-        </td>
-        <td>
-          <button class="btn-editar" (click)="abrirModal(tech)">Editar</button>
-        </td>
-      </tr>
+      @for (tech of tecnologiasFiltradas; track tech.id) {
+        <tr>
+          <td><strong>{{ tech.name || tech.nombre }}</strong></td>
+          <td>{{ tech.supplier || tech.proveedor }}</td>
+          <td>{{ tech.version }}</td>
+          <td>
+            <span class="estado-badge" [class]="(tech.lifeCycleStatus || tech.estado || 'activa').toLowerCase()">
+              {{ tech.lifeCycleStatus || tech.estado || 'Activa' }}
+            </span>
+          </td>
+          <td class="acciones">
+            <button class="btn-editar" (click)="abrirModal(tech)">✏️ Editar</button>
+            <button class="btn-eliminar" (click)="eliminarTecnologia(tech.id)">🗑️ Eliminar</button>
+          </td>
+        </tr>
       }
     </tbody>
   </table>
 
-  <!-- Acciones de añadir tecnología, guardar y cancelar -->
-  <div class="acciones-inferiores">
-    <button class="btn-add" (click)="abrirModalNuevo()">
-      <span class="icon">+</span> Añadir Tecnología
-    </button>
-
-    <div class="botones-guardar-cancelar">
-      <button class="btn-guardar">Guardar</button>
-      <button class="btn-cancelar">Cancelar</button>
-    </div>
+  <!-- MODAL DE EDICIÓN/CREACIÓN -->
+  @if (mostrarModal) {
+    <div class="modal-overlay" (click)="cerrarModal()">
+      <div class="modal-contenido" (click)="$event.stopPropagation()">
+        <h2>{{ modoTitulo }}</h2>
+        
+        <div class="form-group">
+          <label>Nombre de la Tecnología *</label>
+          <input type="text" [(ngModel)]="techEnEdicion.nombre" placeholder="Ej: Java 17, MySQL 8" class="form-control">
+        </div>
+        
+        <div class="form-group">
+          <label>Proveedor</label>
+          <input type="text" [(ngModel)]="techEnEdicion.proveedor" placeholder="Ej: Oracle, Microsoft, Open Source" class="form-control">
+        </div>
+        
+        <div class="form-group">
+          <label>Versión</label>
+          <input type="text" [(ngModel)]="techEnEdicion.version" placeholder="Ej: 17, 8.0, 3.2" class="form-control">
+        </div>
+        
+        <div class="form-group">
+          <label>Estado del Ciclo de Vida</label>
+          <select [(ngModel)]="techEnEdicion.lifeCycleStatus" class="form-control">
+            <option value="ACTIVE">ACTIVE - Activa</option>
+            <option value="DEPRECATED">DEPRECATED - Deprecated</option>
+            <option value="HOLD">HOLD - En espera</option>
+            <option value="EOL">EOL - Fin de vida</option>
+          </select>
+        </div>
+        
+        <div class="form-group">
+    <label>Dominio Tecnológico</label>
+    <select [(ngModel)]="techEnEdicion.domain.id" class="form-control">
+      <option [value]="1">Backend</option>
+      <option [value]="2">Base de Datos</option>
+      <option [value]="3">Frontend</option>
+      <option [value]="4">Mensajería</option>
+    </select>
   </div>
+        
+        <div class="form-group">
+          <label>
+            <input type="checkbox" [(ngModel)]="techEnEdicion.active">
+            Activa (visible en catálogo)
+          </label>
+        </div>
 
-  <!-- Auditoría -->
-  <div class="auditoria">
-    <h2>Auditoría de Cambios</h2>
-
-    <div class="cambios-lista">
-      @for (cambio of cambios; track cambio.fecha) { <!--Bucle para mostrar cambios-->
-      <div class="cambio-item">
-        <span class="fecha">{{ cambio.fecha }}</span>
-        <span class="usuario">{{ cambio.usuario }}</span>
-        <span class="descripcion">{{ cambio.descripcion }}</span>
-      </div>
-      }
-    </div>
-
-    <a href="#" class="ver-historial">Ver Historial Completo ></a>
-  </div>
-
-  <!-- Modal para editar/añadir -->
-  @if (mostrarModal) { <!--Si mostrar modal es == true-->
-  <div class="modal-overlay" (click)="cerrarModal()">
-    <div class="modal-contenido" (click)="$event.stopPropagation()">
-      <h2>{{ modoTitulo }}</h2> <!-- Título dinámico: "Editar Tecnología" o "Añadir Nueva Tecnología" -->
-
-      <div class="modal-campo">
-        <label>Nombre:</label>
-        <input [(ngModel)]="techEnEdicion.nombre" class="modal-input">
-      </div>
-
-      <div class="modal-campo">
-        <label>Proveedor:</label>
-        <input [(ngModel)]="techEnEdicion.proveedor" class="modal-input">
-      </div>
-
-      <div class="modal-campo">
-        <label>Estado:</label>
-        <select [(ngModel)]="techEnEdicion.estado" class="modal-input">
-          <option>Activa</option>
-          <option>Deprecated</option>
-          <option>Hold</option>
-          <option>EOL</option>
-        </select>
-      </div>
-
-      <div class="modal-botones">
-        <button class="btn-guardar" (click)="guardarModal()">Guardar</button>
-        <button class="btn-cancelar" (click)="cerrarModal()">Cancelar</button>
+        <div class="modal-acciones">
+          <button class="btn-guardar" (click)="guardarModal()">Guardar</button>
+          <button class="btn-cancelar" (click)="cerrarModal()">Cancelar</button>
+        </div>
       </div>
     </div>
-  </div>
   }
 </div>

@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common'; // Para if y bucles
-import { FormsModule } from '@angular/forms'; // Para escribir en los inputs
+import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { ApiService } from '../../services/api.service';
 
 @Component({
   selector: 'app-catalogo-usuario',
@@ -9,20 +10,14 @@ import { FormsModule } from '@angular/forms'; // Para escribir en los inputs
   templateUrl: './catalogo-usuario.html',
   styleUrl: './catalogo-usuario.css'
 })
-export class CatalogoUsuarioComponent {
-  tecnologias = [
-    { id: 1, nombre: 'PostgreSQL', proveedor: 'Open Source', estado: 'Activa', permitido: true, recomendado: true, obligatorio: false },
-    { id: 2, nombre: 'Amazon Aurora', proveedor: 'AWS', estado: 'Activa', permitido: true, recomendado: true, obligatorio: true },
-    { id: 3, nombre: 'Oracle Database', proveedor: 'Oracle', estado: 'Deprecated', permitido: false, recomendado: false, obligatorio: false },
-    { id: 4, nombre: 'MySQL', proveedor: 'Oracle', estado: 'Hold', permitido: true, recomendado: false, obligatorio: false },
-    { id: 5, nombre: 'DynamoDB', proveedor: 'AWS', estado: 'Activa', permitido: true, recomendado: true, obligatorio: false },
-    { id: 6, nombre: 'DB2', proveedor: 'IBM', estado: 'EOL', permitido: false, recomendado: false, obligatorio: false }
-  ];
-
+export class CatalogoUsuarioComponent implements OnInit {
+  
+  tecnologias: any[] = [];
+  
   // Valores seleccionados en los filtros
   filtros = {
     tipologia: 'Backend Spring Boot',
-    plataforma: 'AWS',
+    plataforma: 'Amazon Web Services',
     dominio: 'Base de Datos'
   };
 
@@ -33,8 +28,53 @@ export class CatalogoUsuarioComponent {
     dominio: false
   };
 
-  textoBusqueda: string = ''; // Se conecta con html para el buscador y cuando el usuario escribe, se actualiza esta propiedad
-  techSeleccionada: any = null; // Guarda la tecnología seleccionada para mostrar en el modal
+  textoBusqueda: string = '';
+  techSeleccionada: any = null;
+
+  constructor(private apiService: ApiService) {
+    console.log('🏗️ Constructor de CatalogoUsuarioComponent ejecutado');
+  }
+
+  ngOnInit() {
+    console.log('🔵 ngOnInit ejecutado');
+    this.cargarTecnologias();
+  }
+
+  cargarTecnologias() {
+    console.log('🔄 cargarTecnologias() ejecutado');
+    console.log('Filtros:', this.filtros);
+    
+    this.apiService.getTechnologiesWithRules(
+      this.filtros.tipologia,
+      this.filtros.plataforma,
+      this.filtros.dominio
+    ).subscribe({
+      next: (data) => {
+        console.log('✅ Datos recibidos del backend:', data);
+        
+        // Mapear los datos al formato que espera el HTML
+        this.tecnologias = data.map(item => ({
+          id: item.id,
+          nombre: item.technology || item.nombre || item.name || 'Sin nombre',
+          proveedor: item.supplier || item.proveedor || 'Desconocido',
+          estado: item.lifeCycleStatus || item.estado || 'Activa',
+          permitido: item.allowed === true,
+          recomendado: item.recommended === true,
+          obligatorio: item.mandatory === true
+        }));
+        
+        console.log('📊 Tecnologías mapeadas:', this.tecnologias);
+      },
+      error: (error) => {
+        console.error('❌ Error al cargar tecnologías:', error);
+        // Si hay error, usar datos de prueba
+        this.tecnologias = [
+          { id: 1, nombre: 'PostgreSQL', proveedor: 'Open Source', estado: 'Activa', permitido: true, recomendado: true, obligatorio: false },
+          { id: 2, nombre: 'Amazon Aurora', proveedor: 'AWS', estado: 'Activa', permitido: true, recomendado: true, obligatorio: true }
+        ];
+      }
+    });
+  }
 
   // Alternar apertura/cierre de desplegables
   toggleDesplegable(seccion: 'tipologia' | 'plataforma' | 'dominio') {
@@ -44,21 +84,23 @@ export class CatalogoUsuarioComponent {
   // Seleccionar una opción del desplegable
   seleccionarOpcion(seccion: 'tipologia' | 'plataforma' | 'dominio', valor: string) {
     this.filtros[seccion] = valor;
-    this.desplegables[seccion] = false; // Cierra el desplegable después de seleccionar
+    this.desplegables[seccion] = false;
+    this.cargarTecnologias();
   }
 
   // Filtro de búsqueda
   get tecnologiasFiltradas() {
-    if (!this.textoBusqueda) return this.tecnologias; // Si el buscador está vacío, muestra todas
+    if (!this.textoBusqueda) return this.tecnologias;
     
-    const busqueda = this.textoBusqueda.toLowerCase(); // filter crea un nuevo array solo con las tecnologías que cumplen esa condición
-    return this.tecnologias.filter(tech => 
-      tech.nombre.toLowerCase().includes(busqueda) ||
-      tech.proveedor.toLowerCase().includes(busqueda)
-    );
+    const busqueda = this.textoBusqueda.toLowerCase();
+    return this.tecnologias.filter(tech => {
+      const nombre = (tech.nombre || '').toLowerCase();
+      const proveedor = (tech.proveedor || '').toLowerCase();
+      return nombre.includes(busqueda) || proveedor.includes(busqueda);
+    });
   }
 
-  verDetalles(tech: any) { // Guarda la tecnología seleccionada para que el modal pueda mostrarla
+  verDetalles(tech: any) {
     this.techSeleccionada = tech;
   }
 
